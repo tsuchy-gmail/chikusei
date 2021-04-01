@@ -244,6 +244,252 @@ spotsData.forEach((value, key) => {
 });
 **/
 
+const fonts = {
+  alphabet: "'Playfair Display', serif",
+  robot: "'Roboto', sans-serif",
+  kaisyo: "'Noto Serif JP', serif",
+  jp: "'Noto Sans JP', sans-serif",
+};
+
+const colors = {
+  primaryColor: "#2A68C9",
+  loogia: "#01A0EB",
+};
+
+let rowNumber = 8;
+
+//--sub--
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+function CustomizedSnackbars() {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  return <div className={classes.root}></div>;
+}
+
+function PaperBack({ width, height, margin, elevation }) {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      flexWrap: "wrap",
+      "& > *": {
+        width: width ? width : "300px",
+        height: height ? height : theme.spacing(8),
+      },
+    },
+  }));
+
+  const classes = useStyles();
+
+  return (
+    <div
+      className={classes.root}
+      style={{
+        width: width ? width : "300px",
+        margin: margin ? margin : "0 auto",
+      }}
+    >
+      <Paper elevation={elevation ? elevation : 5} />
+    </div>
+  );
+}
+
+function CircularIndeterminate() {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      "& > * + *": {
+        marginLeft: theme.spacing(2),
+      },
+    },
+  }));
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <CircularProgress />
+    </div>
+  );
+}
+
+function Header() {
+  const styleOfHeader = {
+    width: "100%",
+    height: "58px",
+    boxShadow: "3px",
+  };
+  return <div style={styleOfHeader}></div>;
+}
+
+function SelectSpot({ value, setValue, label }) {
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(4),
+      minWidth: 120,
+    },
+  }));
+
+  const classes = useStyles();
+  const styelOfSelect = {
+    width: "200px",
+  };
+
+  return (
+    <div>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={value}
+          onChange={setValue}
+          style={styelOfSelect}
+        >
+          <MenuItem value={null}>-</MenuItem>
+          {spotNames.map((item, index) => (
+            <MenuItem value={index + 1}>
+              <b>{item}</b>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
+
+function SelectDuration({ value, setValue }) {
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      marginRight: theme.spacing(4),
+      marginLeft: theme.spacing(0),
+      minWidth: 20,
+    },
+  }));
+
+  const classes = useStyles();
+  const styelOfSelect = {
+    width: "114px",
+  };
+
+  const times = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30];
+
+  return (
+    <div>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">作業時間(分)</InputLabel>
+        <Select value={value} onChange={setValue} style={styelOfSelect}>
+          <MenuItem value={null}>0 (default)</MenuItem>
+          {times.map((time) => (
+            <MenuItem value={time}>{time}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
+
+function SelectTime({ value, setValue, type }) {
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      marginRight: theme.spacing(4),
+      marginLeft: theme.spacing(0),
+      minWidth: 20,
+    },
+  }));
+
+  const classes = useStyles();
+  const styelOfSelect = {
+    width: "50px",
+    fontSize: "20px",
+  };
+
+  let hours = [];
+  for (let i = 1; i <= 23; i++) {
+    hours.push(i);
+  }
+  let minutes = [];
+  for (let i = 0; i <= 59; i++) {
+    minutes.push(i);
+  }
+
+  return (
+    <div>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label"></InputLabel>
+        <Select value={value} onChange={setValue} style={styelOfSelect}>
+          {type === "hours" && <MenuItem value={"00"}>0</MenuItem>}
+          {type === "hours" &&
+            hours.map((hour) => {
+              let value;
+              if (hour < 10) {
+                value = "0" + hour;
+              } else {
+                value = "" + hour;
+              }
+              return (
+                <MenuItem
+                  style={{ paddingTop: 0, paddingBottom: 0 }}
+                  value={value}
+                >
+                  {value}
+                </MenuItem>
+              );
+            })}
+          {type === "minutes" &&
+            minutes.map((minute) => {
+              let value;
+              if (minute < 10) {
+                value = "0" + minute;
+              } else {
+                value = "" + minute;
+              }
+              return (
+                <MenuItem
+                  style={{ paddingTop: 0, paddingBottom: 0 }}
+                  value={value}
+                >
+                  {value}
+                </MenuItem>
+              );
+            })}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
+//--sub--
+
+
+/**
+ *
+ *
+ *
+ **/
 function App() {
   const [pickupSpot, setPickupSpot] = useState(
     new Array(rowNumber).fill(null, 0)
@@ -343,78 +589,6 @@ const Logo = React.memo(() => {
     </div>
   );
 });
-
-const fonts = {
-  alphabet: "'Playfair Display', serif",
-  robot: "'Roboto', sans-serif",
-  kaisyo: "'Noto Serif JP', serif",
-  jp: "'Noto Sans JP', sans-serif",
-};
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    "& > * + *": {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
-
-function CustomizedSnackbars() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  return <div className={classes.root}></div>;
-}
-const colors = {
-  primaryColor: "#2A68C9",
-  loogia: "#01A0EB",
-};
-
-let rowNumber = 8;
-
-function PaperBack({ width, height, margin, elevation }) {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      "& > *": {
-        width: width ? width : "300px",
-        height: height ? height : theme.spacing(8),
-      },
-    },
-  }));
-
-  const classes = useStyles();
-
-  return (
-    <div
-      className={classes.root}
-      style={{
-        width: width ? width : "300px",
-        margin: margin ? margin : "0 auto",
-      }}
-    >
-      <Paper elevation={elevation ? elevation : 5} />
-    </div>
-  );
-}
 
 const HeaderBackground = React.memo(() => {
   const useStyles = makeStyles((theme) => ({
@@ -590,171 +764,6 @@ const ListOfCombinations = React.memo(
     );
   }
 );
-
-function CircularIndeterminate() {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      "& > * + *": {
-        marginLeft: theme.spacing(2),
-      },
-    },
-  }));
-  const classes = useStyles();
-
-  return (
-    <div className={classes.root}>
-      <CircularProgress />
-    </div>
-  );
-}
-
-function Header() {
-  const styleOfHeader = {
-    width: "100%",
-    height: "58px",
-    boxShadow: "3px",
-  };
-  return <div style={styleOfHeader}></div>;
-}
-
-function SelectSpot({ value, setValue, label }) {
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(4),
-      minWidth: 120,
-    },
-  }));
-
-  const classes = useStyles();
-  const styelOfSelect = {
-    width: "200px",
-  };
-
-  return (
-    <div>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">{label}</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value}
-          onChange={setValue}
-          style={styelOfSelect}
-        >
-          <MenuItem value={null}>-</MenuItem>
-          {spotNames.map((item, index) => (
-            <MenuItem value={index + 1}>
-              <b>{item}</b>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
-  );
-}
-
-function SelectDuration({ value, setValue }) {
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      marginRight: theme.spacing(4),
-      marginLeft: theme.spacing(0),
-      minWidth: 20,
-    },
-  }));
-
-  const classes = useStyles();
-  const styelOfSelect = {
-    width: "114px",
-  };
-
-  const times = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30];
-
-  return (
-    <div>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">作業時間(分)</InputLabel>
-        <Select value={value} onChange={setValue} style={styelOfSelect}>
-          <MenuItem value={null}>0 (default)</MenuItem>
-          {times.map((time) => (
-            <MenuItem value={time}>{time}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
-  );
-}
-
-function SelectTime({ value, setValue, type }) {
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      marginRight: theme.spacing(4),
-      marginLeft: theme.spacing(0),
-      minWidth: 20,
-    },
-  }));
-
-  const classes = useStyles();
-  const styelOfSelect = {
-    width: "50px",
-    fontSize: "20px",
-  };
-
-  let hours = [];
-  for (let i = 1; i <= 23; i++) {
-    hours.push(i);
-  }
-  let minutes = [];
-  for (let i = 0; i <= 59; i++) {
-    minutes.push(i);
-  }
-
-  return (
-    <div>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label"></InputLabel>
-        <Select value={value} onChange={setValue} style={styelOfSelect}>
-          {type === "hours" && <MenuItem value={"00"}>0</MenuItem>}
-          {type === "hours" &&
-            hours.map((hour) => {
-              let value;
-              if (hour < 10) {
-                value = "0" + hour;
-              } else {
-                value = "" + hour;
-              }
-              return (
-                <MenuItem
-                  style={{ paddingTop: 0, paddingBottom: 0 }}
-                  value={value}
-                >
-                  {value}
-                </MenuItem>
-              );
-            })}
-          {type === "minutes" &&
-            minutes.map((minute) => {
-              let value;
-              if (minute < 10) {
-                value = "0" + minute;
-              } else {
-                value = "" + minute;
-              }
-              return (
-                <MenuItem
-                  style={{ paddingTop: 0, paddingBottom: 0 }}
-                  value={value}
-                >
-                  {value}
-                </MenuItem>
-              );
-            })}
-        </Select>
-      </FormControl>
-    </div>
-  );
-}
 
 const ProjectName = React.memo(({ text, handleChangeText }) => {
   const useStyles = makeStyles((theme) => ({
