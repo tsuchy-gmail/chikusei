@@ -261,32 +261,33 @@ function App() {
   const [startMinute, setStartMinute] = useState("00");
 
   const [text, setText] = useState(initialName);
+
   const handleChangePickup = useCallback((e, index) => {
     pickupSpot.splice(index, 1, e.target.value);
     setPickupSpot([...pickupSpot]);
-  });
+  }, []);
   const handleChangeDelivery = useCallback((e, index) => {
     deliverySpot.splice(index, 1, e.target.value);
     setDeliverySpot([...deliverySpot]);
-  });
+  }, []);
   const handleChangePickupTime = useCallback((e, index) => {
     pickupServiceDuration.splice(index, 1, e.target.value);
     setPickupServiceDuration([...pickupServiceDuration]);
-  });
+  }, []);
   const handleChangeDeliveryTime = useCallback((e, index) => {
     deliveryServiceDuration.splice(index, 1, e.target.value);
     setDeliveryServiceDuration([...deliveryServiceDuration]);
-  });
+  }, []);
   const handleChangeText = useCallback((e) => {
     setText(e.target.value);
-  });
+  }, []);
 
   const handleChangeHour = useCallback((e) => {
     setStartHour(e.target.value);
-  });
+  }, []);
   const handleChangeMinute = useCallback((e) => {
     setStartMinute(e.target.value);
-  });
+  }, []);
 
   return (
     <div>
@@ -322,8 +323,7 @@ function App() {
   );
 }
 
-function Logo() {
-  console.log("LOGO");
+const Logo = React.memo(() => {
   const src =
     "https://jp.techcrunch.com/wp-content/uploads/2019/10/optimind_logo-e1572066384165.png?resize=2048,348";
 
@@ -342,7 +342,8 @@ function Logo() {
       />
     </div>
   );
-}
+});
+
 const fonts = {
   alphabet: "'Playfair Display', serif",
   robot: "'Roboto', sans-serif",
@@ -415,7 +416,7 @@ function PaperBack({ width, height, margin, elevation }) {
   );
 }
 
-function HeaderBackground() {
+const HeaderBackground = React.memo(() => {
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -475,8 +476,7 @@ function HeaderBackground() {
       <div></div>
     </>
   );
-}
-
+});
 const ListOfCombinations = React.memo(
   ({
     pickupSpot,
@@ -756,7 +756,7 @@ function SelectTime({ value, setValue, type }) {
   );
 }
 
-function ProjectName({ text, handleChangeText }) {
+const ProjectName = React.memo(({ text, handleChangeText }) => {
   const useStyles = makeStyles((theme) => ({
     root: {
       "& > *": {
@@ -824,7 +824,7 @@ function ProjectName({ text, handleChangeText }) {
       </div>
     </div>
   );
-}
+});
 
 const StartTime = React.memo(
   ({ startHour, handleChangeHour, startMinute, handleChangeMinute }) => {
