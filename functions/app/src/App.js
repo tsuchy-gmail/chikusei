@@ -20,7 +20,6 @@ import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 import LabelImportantRoundedIcon from "@material-ui/icons/LabelImportantRounded";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import TimerIcon from "@material-ui/icons/Timer";
-import Person from "@material-ui/icons/Person";
 
 const organization = chikusei;
 const LoogiaURL = "https://dev.loogia.tech/api/v0/projects";
@@ -484,7 +483,6 @@ function SelectTime({ value, setValue, type }) {
 }
 //--sub--
 
-
 /**
  *
  *
@@ -903,6 +901,29 @@ const StartTime = React.memo(
   }
 );
 
+const adjustRoute = (orderArray) => {
+  let isGoalIncluded;
+  let isGoalSS;
+  orderArray.forEach((order) => {
+    if (order === "SSゴール" || order === "SSゴールB") {
+      isGoalIncluded = true;
+    }
+    if (order === "BBQ場" || order.match(/広場/)) {
+      isGoalSS = true;
+    }
+  });
+
+  if (!isGoalIncluded) {
+    if (isGoalSS) {
+      orderArray.push("SSゴール");
+    } else {
+      orderArray.push("SSゴールB");
+    }
+  }
+
+  return orderArray;
+};
+
 const PostAndGet = React.memo(
   ({
     projectName,
@@ -919,7 +940,11 @@ const PostAndGet = React.memo(
     const [fms, setFms] = useState(false);
 
     const postFMS = (routeOrder) => {
-      fmsPostOption.body = JSON.stringify({ order: routeOrder });
+      const adjustedRoute = adjustRoute(routeOrder);
+      console.log("Order = ", adjustedRoute);
+
+      fmsPostOption.body = JSON.stringify({ order: adjustedRoute });
+
       fetch("/fms", fmsPostOption)
         .then((data) => data.json())
         .then((data) => {
@@ -1011,7 +1036,6 @@ const PostAndGet = React.memo(
                 setIsCalculating(false);
                 setIsFinished(true);
                 postFMS([...routeOrder]);
-                console.log("Order = ", [...routeOrder]);
               } else {
                 setIsCalculating(false);
                 setIsFinished(false);
